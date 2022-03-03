@@ -1,4 +1,11 @@
-const VY_EOB: i32 = 0;
+use crate::{types::{
+    VyInteger,
+    VyChar,
+    VyBoolean,
+    vytable::VyTable
+}, opcodes::VyToken};
+
+const VY_EOB: i32 = -1;
 
 macro_rules! is_eob {
     ( $(),*) => {
@@ -12,21 +19,19 @@ macro_rules! add_keyword {
     };
 }
 
-struct VyLexer
-{
+pub struct VyLexer<'a> {
     keywords: VyTable,
     column: VyInteger,
     token: VyChar,
     prev_token: VyChar,
-    compiler_error: &fn(String, Optional<String>),
+    compiler_error: &'a fn(String, Option<String>),
     last_line: VyInteger,
     current_line: VyInteger,
-    eof: VyFalse
+    eof: VyBoolean
 }
 
-impl VyLexer
-{
-    fn new(error_func: &fn(String, Optional<String>)) -> VyLexer
+impl VyLexer<'_> {
+    fn new(error_func: &fn(String, Option<String>)) -> VyLexer
     {
         let ret = VyLexer
         {
@@ -112,9 +117,26 @@ impl VyLexer
                         }
                         '=' => {
                             self.next();
-                            return TkDivideEq;
+                            return VyToken::TkDivideEq;
                         }
                     }
+                }
+                '#' => {
+                    // compiler flags
+                }
+                '=' => {
+
+                }
+                _ => {
+                    // gonna have to do a bunch of stuff for hex and all that jazz.
+                    if(self.token.is_digit) {
+                        return VyToken::TkInteger 
+                    }
+                    else if(self.token.is_alpha) {
+                        return VyToken::TkIdentifier
+                    }
+
+                    return VY_EOB;
                 }
             }
         }

@@ -1,1 +1,1 @@
-struct VyVM;
+pub struct VyVM;
