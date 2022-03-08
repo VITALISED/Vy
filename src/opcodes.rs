@@ -85,8 +85,11 @@ pub enum VyToken {
     TkFalse = 79,
 }
 
-pub enum VyInstructions
-{
+pub enum VyInstructions {
+
+}
+
+pub enum VyCompilerFlag {
 
 }
 

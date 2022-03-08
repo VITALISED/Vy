@@ -7,9 +7,12 @@ pub mod opcodes;
 pub mod state;
 pub mod vm;
 
+const VY_VERSION: i32 = 001;
+
 pub enum VyResult {
     VyOk = 0,
-    VyError = -1
+    VyCompilerError = -1,
+    VyRaiseError = -2
 }
 
 #[macro_export]
