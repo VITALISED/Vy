@@ -1,3 +1,4 @@
+#[derive(PartialEq)]
 pub enum VyToken {
     TkIdentifier = 0,
 
@@ -83,6 +84,7 @@ pub enum VyToken {
     TkFloat = 77,
     TkTrue = 78,
     TkFalse = 79,
+    TkEOF = 80,
 }
 
 pub enum VyInstructions {

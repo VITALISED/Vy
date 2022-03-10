@@ -1,6 +1,6 @@
 use crate::types::VyChar;
 
 pub struct VyString {
-    //next: &VyString,
+    next: *mut VyString,
     val: VyChar
 }

@@ -1,5 +1,5 @@
-use super::VyObjectType;
+use crate::object::VyObject;
 
-pub struct VyArray<'a> {
-    key_type: &'a VyObjectType
+pub struct VyArray {
+    next: VyObject,
 }

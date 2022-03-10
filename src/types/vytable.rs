@@ -1,1 +1,3 @@
-pub struct VyTable;
+pub struct VyTable {
+    //hash
+}

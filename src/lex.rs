@@ -2,20 +2,20 @@ use crate::{types::{
     VyInteger,
     VyChar,
     VyBoolean,
-    vytable::VyTable
-}, opcodes::VyToken};
+    vystring::VyString, vytable::VyTable
+}};
 
-const VY_EOB: i32 = -1;
+// const VY_EOB: i32 = -1;
 
-macro_rules! is_eob {
-    ( $(),*) => {
-        token != VY_EOB 
-    };
-}
+// macro_rules! is_eob {
+//     ( $(),*) => {
+//         token != VY_EOB 
+//     };
+// }
 
 macro_rules! add_keyword {
-    ( $($self:ident, $key:ident, $id:expr ),*) => {
-        todo!();
+    ( $($lexer:ident, $key:ident, $id:expr ),*) => {
+        
     };
 }
 
@@ -33,8 +33,7 @@ pub struct VyLexer<'a> {
 impl VyLexer<'_> {
     fn new(error_func: &fn(String, Option<String>)) -> VyLexer
     {
-        let ret = VyLexer
-        {
+        let ret = VyLexer {
             keywords: VyTable::new(),
             compiler_error: error_func,
             column: -1,
@@ -45,114 +44,115 @@ impl VyLexer<'_> {
             eof: false
         };
 
-        add_keyword!(self, bool, TkBoolSig);
-        add_keyword!(self, byte, TkByteSig);
-        add_keyword!(self, int, TkIntSig);
-        add_keyword!(self, float, TkFloatSig);
-        add_keyword!(self, double, TkDoubleSig);
-        add_keyword!(self, char, TkCharSig);
-        add_keyword!(self, void, TkVoidSig);
-        add_keyword!(self, string, TkStringSig);
+        add_keyword!(ret, bool, TkBoolSig);
+        add_keyword!(ret, byte, TkByteSig);
+        add_keyword!(ret, int, TkIntSig);
+        add_keyword!(ret, float, TkFloatSig);
+        add_keyword!(ret, double, TkDoubleSig);
+        add_keyword!(ret, char, TkCharSig);
+        add_keyword!(ret, void, TkVoidSig);
+        add_keyword!(ret, string, TkStringSig);
         
-        add_keyword!(self, fn, TkClosureSig);
-        add_keyword!(self, class, TkClassSig);
-        add_keyword!(self, array, TkArraySig);
-        add_keyword!(self, table, TkTableSig);
-        add_keyword!(self, enum, TkEnumSig);
+        add_keyword!(ret, fn, TkClosureSig);
+        add_keyword!(ret, class, TkClassSig);
+        add_keyword!(ret, array, TkArraySig);
+        add_keyword!(ret, table, TkTableSig);
+        add_keyword!(ret, enum, TkEnumSig);
 
-        add_keyword!(self, if, TkIf);
-        add_keyword!(self, else, TkElse);
-        add_keyword!(self, while, TkWhile);
-        add_keyword!(self, for, TkFor);
-        add_keyword!(self, in, TkIn);
-        add_keyword!(self, notin, TkNotIn);
-        add_keyword!(self, foreach, TkForEach);
-        add_keyword!(self, return, TkReturn);
-        add_keyword!(self, break, TkBreak);
-        add_keyword!(self, continue, TkContinue);
-        add_keyword!(self, import, TkImport);
-        add_keyword!(self, typeof, TkTypeof);
-        add_keyword!(self, new, TkNew);
-        add_keyword!(self, delete, TkDelete);
-        add_keyword!(self, null, TkNull);
-        //add_keyword!(self, yield, TkYield);
-        add_keyword!(self, this, TkThis);
-        add_keyword!(self, super, TkSuper);
-        //add_keyword!(self, resume, TkResume);
-        add_keyword!(self, throw, TkThrow);
-        add_keyword!(self, try, TkTry);
-        add_keyword!(self, catch, TkCatch);
-        add_keyword!(self, switch, TkSwitch);
-        add_keyword!(self, case, TkCase);
-        add_keyword!(self, default, TkDefault);
-        add_keyword!(self, instanceof, TkInstanceof);
-        add_keyword!(self, constructor, TkConstructor);
-        add_keyword!(self, static, TkStatic);
-        add_keyword!(self, public, TkPublic);
-        add_keyword!(self, private, TkPrivate);
-        add_keyword!(self, extends, TkExtends);
-        add_keyword!(self, const, TkConst);
-        add_keyword!(self, JSON, TkJSON);
-        add_keyword!(self, async, TkAsync);
-        add_keyword!(self, await, TkAwait);
-        add_keyword!(self, thread, TkThread);
-        //add_keyword!(self,generator, TkGenerator);
-        add_keyword!(self, true, TkTrue);
-        add_keyword!(self, false, TkFalse);
+        add_keyword!(ret, if, TkIf);
+        add_keyword!(ret, else, TkElse);
+        add_keyword!(ret, while, TkWhile);
+        add_keyword!(ret, for, TkFor);
+        add_keyword!(ret, in, TkIn);
+        add_keyword!(ret, notin, TkNotIn);
+        add_keyword!(ret, foreach, TkForEach);
+        add_keyword!(ret, return, TkReturn);
+        add_keyword!(ret, break, TkBreak);
+        add_keyword!(ret, continue, TkContinue);
+        add_keyword!(ret, import, TkImport);
+        add_keyword!(ret, typeof, TkTypeof);
+        add_keyword!(ret, new, TkNew);
+        add_keyword!(ret, delete, TkDelete);
+        add_keyword!(ret, null, TkNull);
+        //add_keyword!(ret, yield, TkYield);
+        add_keyword!(ret, this, TkThis);
+        add_keyword!(ret, super, TkSuper);
+        //add_keyword!(ret, resume, TkResume);
+        add_keyword!(ret, throw, TkThrow);
+        add_keyword!(ret, try, TkTry);
+        add_keyword!(ret, catch, TkCatch);
+        add_keyword!(ret, switch, TkSwitch);
+        add_keyword!(ret, case, TkCase);
+        add_keyword!(ret, default, TkDefault);
+        add_keyword!(ret, instanceof, TkInstanceof);
+        add_keyword!(ret, constructor, TkConstructor);
+        add_keyword!(ret, static, TkStatic);
+        add_keyword!(ret, public, TkPublic);
+        add_keyword!(ret, private, TkPrivate);
+        add_keyword!(ret, extends, TkExtends);
+        add_keyword!(ret, const, TkConst);
+        add_keyword!(ret, JSON, TkJSON);
+        add_keyword!(ret, async, TkAsync);
+        add_keyword!(ret, await, TkAwait);
+        add_keyword!(ret, thread, TkThread);
+        //add_keyword!(ret, generator, TkGenerator);
+        add_keyword!(ret, true, TkTrue);
+        add_keyword!(ret, false, TkFalse);
 
         return ret
     }
 
-    pub fn lex() {
-        todo!();
-    }
+    // pub fn lex() {
+    //     todo!();
+    // }
 
-    fn read_tokens(&self) {
-        while(self.token != VY_EOB) {
-            match self.token {
-                '\t' | '\r' | ' ' => {
-                    self.next();
-                }
-                '\n' => {
-                    self.current_line += 1;
-                }
-                '/' => {
-                    self.next();
-                    match self.token {
-                        '/' => {
-                            // do line comment
-                        }
-                        '*' => {
-                            // do block comment
-                        }
-                        '=' => {
-                            self.next();
-                            return VyToken::TkDivideEq;
-                        }
-                    }
-                }
-                '#' => {
-                    // compiler flags
-                }
-                '=' => {
+    //todo: this
+    // fn read_tokens(&self) {
+    //     while(self.token != VY_EOB) {
+    //         match self.token {
+    //             '\t' | '\r' | ' ' => {
+    //                 self.next();
+    //             }
+    //             '\n' => {
+    //                 self.current_line += 1;
+    //             }
+    //             '/' => {
+    //                 self.next();
+    //                 match self.token {
+    //                     '/' => {
+    //                         // do line comment
+    //                     }
+    //                     '*' => {
+    //                         // do block comment
+    //                     }
+    //                     '=' => {
+    //                         self.next();
+    //                         return VyToken::TkDivideEq;
+    //                     }
+    //                 }
+    //             }
+    //             '#' => {
+    //                 // compiler flags
+    //             }
+    //             '=' => {
 
-                }
-                _ => {
-                    // gonna have to do a bunch of stuff for hex and all that jazz.
-                    if(self.token.is_digit) {
-                        return VyToken::TkInteger 
-                    }
-                    else if(self.token.is_alpha) {
-                        return VyToken::TkIdentifier
-                    }
-                }
-            }
-        }
-    }
+    //             }
+    //             _ => {
+    //                 // gonna have to do a bunch of stuff for hex and all that jazz.
+    //                 // if self.token.is_digit {
+    //                 //     return VyToken::TkInteger 
+    //                 // }
+    //                 // else if self.token.is_alpha {
+    //                 //     return VyToken::TkIdentifier
+    //                 // }
+    //             }
+    //         }
+    //     }
+    // }
 
-    fn next() {
-        todo!()
-    }
+    // fn next() {
+    //     todo!()
+    // }
 
     pub fn is_eof(&self) -> bool {
         return self.eof;

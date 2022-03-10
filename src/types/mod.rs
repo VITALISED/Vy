@@ -37,7 +37,7 @@ pub type VyVoid = ();
 
 pub type VyUserFunction<T> = fn(T) -> VyResult;
 
-pub enum VyObjectType<'a> {
+pub enum VyObjectType {
     OTByte(VyByte),
     OTInteger(VyInteger),
     OTFloat(VyFloat),
@@ -48,7 +48,7 @@ pub enum VyObjectType<'a> {
     OTRange(VyRange<VyNumeric>),
     OTVoid(VyVoid),
     OTClosure(VyClosure),
-    OTArray(VyArray<'a>),
+    OTArray(VyArray),
     OTTable(VyTable),
     OTClass(VyClass),
     OTInstance(VyInstance),

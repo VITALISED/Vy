@@ -1,7 +1,7 @@
 use crate::{
     vm::VyVM,
     opcodes::{VyToken, VyCompilerFlag},
-    lex::VyLexer, types::VyInteger
+    lex::VyLexer, types::VyInteger, object::VyObject
 };
 
 pub struct VyCompiler<'a> {
@@ -9,14 +9,15 @@ pub struct VyCompiler<'a> {
     lexer: &'a VyLexer<'a>,
     sourcefile: &'a str,
     line: VyInteger,
-    flags: VyCompilerFlag
+    flags: VyCompilerFlag,
+    stack: Vec<VyObject>
 }
 
-macro_rules! lex {
-    ($self: ident) => {
-        $self.lexer.lex(); $self.token = $self.lexer.token;
-    };
-}
+// macro_rules! lex {
+//     ($self: ident) => {
+//         $self.lexer.lex(); $self.token = $self.lexer.token;
+//     };
+// }
 
 impl VyCompiler<'_> {
     fn compile(&self, vm: &VyVM, sourcefile: String, reader: &fn()) {
@@ -39,7 +40,7 @@ impl VyCompiler<'_> {
     fn statements(&self) {
         // figure out how compilers work
         while !self.lexer.is_eof() {
-            self.Statement();
+            self.statement();
         }
     }
 
@@ -49,7 +50,7 @@ impl VyCompiler<'_> {
                 todo!();
             }
             _ => {
-                lex!(self);
+                //lex!(self);
             } 
         }
     }
